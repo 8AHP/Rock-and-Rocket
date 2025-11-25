@@ -10,14 +10,15 @@ config_version=5
 
 [application]
 
-config/name="rocketscene"
+config/name="Rock And Rocket"
+config/version="1.0.0"
 run/main_scene="uid://c3wavabl3g34d"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-config/icon="res://icon.svg"
 
 [autoload]
 
 AudioManager="*res://scripts/audio_manager.gd"
+ScoreManager="*res://scripts/score_manager.gd"
 
 [display]
 

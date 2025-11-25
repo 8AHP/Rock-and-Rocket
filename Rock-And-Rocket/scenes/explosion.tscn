@@ -11,8 +11,8 @@ gradient = SubResource("Gradient_17npe")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_aw4cw"]
 particle_flag_disable_z = true
 spread = 180.0
-initial_velocity_min = 275.59
-initial_velocity_max = 535.44
+initial_velocity_min = 386.69998
+initial_velocity_max = 646.55
 angular_velocity_min = -180.00002
 angular_velocity_max = 179.99998
 radial_velocity_min = -401.57
@@ -25,10 +25,13 @@ color_ramp = SubResource("GradientTexture1D_nfeox")
 script = ExtResource("1_17npe")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
 amount = 50
-amount_ratio = 0.7403
+amount_ratio = 0.2798
 lifetime = 0.91
-explosiveness = 0.07
-randomness = 0.1
-fixed_fps = 60
+one_shot = true
+explosiveness = 1.0
+randomness = 0.98
+fixed_fps = 120
+fract_delta = false
 process_material = SubResource("ParticleProcessMaterial_aw4cw")

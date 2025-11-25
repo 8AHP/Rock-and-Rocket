@@ -1,12 +1,11 @@
 extends Node2D
 
-var speed = 1867.0
+var speed = 1300.0
 var direction = Vector2.ZERO
 var lifetime = 2.5
 var max_distance = 1500.0
 var start_position: Vector2
 
-# **NEW:** Explosion scene reference
 var explosion_scene = preload("res://scenes/explosion.tscn")
 
 func _ready():
@@ -33,21 +32,23 @@ func _process(delta):
 
 func _on_area_2d_area_entered(area):
 	if area.get_parent().has_method("setup_block_type"):
-		# **NEW:** Create explosion at impact point
-		#create_explosion()
+		# Create explosion at impact point
+		create_explosion()
 		
-		# **NEW:** Trigger screen shake
+		# Trigger screen shake
 		var camera = get_viewport().get_camera_2d()
 		if camera.has_method("add_shake"):
 			camera.add_shake(15.0, 0.3)
 		
-		# **NEW:** Play explosion sound
+		# Play explosion sound
 		AudioManager.play_explosion()
+		
+		# **NEW:** Add score for destroying block
+		ScoreManager.add_block_destroy_score()
 		
 		area.get_parent().queue_free()
 		queue_free()
 
-# **NEW:** Explosion creation function
 func create_explosion():
 	var explosion = explosion_scene.instantiate()
 	explosion.position = position
