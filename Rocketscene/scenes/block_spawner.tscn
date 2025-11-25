@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dkpkof41nw28y"]
-
-[ext_resource type="Script" uid="uid://ig1oya8vp0yg" path="res://scripts/block_spawner.gd" id="1_aogsa"]
-
-[node name="BlockSpawner" type="Timer"]
-script = ExtResource("1_aogsa")
