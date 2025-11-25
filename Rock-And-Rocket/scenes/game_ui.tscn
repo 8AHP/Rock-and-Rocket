@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://cb1qv85trfb6r"]
+
+[ext_resource type="Script" uid="uid://dmsaaogmx7ky2" path="res://scripts/game_ui.gd" id="1_yubou"]
+[ext_resource type="FontFile" uid="uid://dimm7ocj5na8b" path="res://assests/font/PixelOperator8.ttf" id="2_rns2u"]
+
+[node name="GameUI" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_yubou")
+
+[node name="UIContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="ScoreDisplay" type="Control" parent="UIContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScoreLabel" type="Label" parent="UIContainer/ScoreDisplay"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_rns2u")
+
+[node name="ScoreShake" type="AnimationPlayer" parent="UIContainer/ScoreDisplay"]
+
+[node name="TimeDisplay" type="Control" parent="UIContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TimeLabel" type="Label" parent="UIContainer/TimeDisplay"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_rns2u")
+
+[node name="MultiplierDisplay" type="Control" parent="UIContainer"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MultiplierLabel" type="Label" parent="UIContainer/MultiplierDisplay"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_rns2u")
