@@ -58,10 +58,30 @@ func setup_ui_styling():
 	# Apply to score label
 	score_label.add_theme_font_override("font", custom_font)
 	score_label.add_theme_font_size_override("font_size", 36)
+	
+	# **NEW:** Difficulty level display (UPPER LEFT, BELOW MULTIPLIER)
+	var difficulty_label = Label.new()
+	difficulty_label.name = "DifficultyLabel"
+	difficulty_label.position = Vector2(50, 220)
+	difficulty_label.size = Vector2(200, 40)
+	difficulty_label.add_theme_font_override("font", custom_font)
+	difficulty_label.add_theme_font_size_override("font_size", 18)
+	difficulty_label.add_theme_color_override("font_color", Color.RED)
+	difficulty_label.add_theme_color_override("font_shadow_color", Color. BLACK)
+	difficulty_label.add_theme_constant_override("shadow_offset_x", 2)
+	difficulty_label.add_theme_constant_override("shadow_offset_y", 2)
+	$UIContainer.add_child(difficulty_label)
 
 func update_displays():
 	score_label.text = "SCORE: " + ScoreManager.get_score_text()
 	multiplier_label.text = "x" + str(ScoreManager.score_multiplier)
+	score_label.text = "SCORE: " + ScoreManager.get_score_text()
+	multiplier_label.text = "x" + str(ScoreManager.score_multiplier)
+	
+	# **NEW:** Update difficulty display
+	var difficulty_label = $UIContainer/DifficultyLabel
+	if difficulty_label:
+		difficulty_label. text = "LEVEL " + str(ScoreManager.get_difficulty_level())
 
 func _on_score_changed(new_score: int, points_added: int):
 	# Update score display

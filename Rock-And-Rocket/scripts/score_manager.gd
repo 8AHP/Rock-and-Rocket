@@ -67,3 +67,23 @@ func reset_score():
 # Set UI reference for direct communication
 func set_ui_controller(ui_ref):
 	ui_controller = ui_ref
+	
+
+# Custom score addition for different block types
+func add_custom_score(points: int):
+	var final_points = points * score_multiplier
+	current_score += final_points
+	
+	# Emit signal for UI animation
+	score_changed.emit(current_score, final_points)
+	print("Score: ", current_score, " (+", final_points, " points)")
+
+# Get current difficulty level for UI display
+func get_difficulty_level() -> int:
+	var difficulty_thresholds = [0, 1000, 3000, 6000, 10000, 15000, 25000, 40000]
+	
+	for i in range(difficulty_thresholds.size() - 1, -1, -1):
+		if current_score >= difficulty_thresholds[i]:
+			return i + 1
+	
+	return 1

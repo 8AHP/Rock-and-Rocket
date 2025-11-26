@@ -5,10 +5,10 @@ var bullet_cooldown = 0.22 # time between shots
 var bullet_timer = 0.0
 
 # Tweak these for your game feel:
-var max_speed = 200
-var min_speed = -150
-var acceleration = 700
-var deceleration = 500
+var max_speed = 250
+var min_speed = -200
+var acceleration = 800
+var deceleration = 600
 var max_rot_speed = 3.4 # radians/sec
 var rot_acceleration = 13.0
 var rot_deceleration = 12.0
