@@ -4,86 +4,98 @@ extends Node
 var current_score: int = 0
 var blocks_destroyed: int = 0
 var time_survived: float = 0.0
-var score_multiplier: int = 1
 
-# Score values (BALANCE THESE FOR YOUR GAME)
+# **REMOVED:** score_multiplier (was time-based)
+# **REMOVED:** multiplier_increase_interval (was 30 seconds)
+
+# Score values
 var block_destroy_points: int = 100
 var survival_bonus_per_second: int = 10
-var multiplier_increase_interval: float = 30.0  # Every 30 seconds
+
+# **NEW:** Combo system variables
+var combo_count: int = 0
+var combo_multiplier: float = 1.0
+var combo_timer: float = 0.0
+var combo_timeout: float = 2.0
+var max_combo_multiplier: float = 5.0
 
 # UI reference
 var ui_controller = null
 
 signal score_changed(new_score: int, points_added: int)
-signal multiplier_changed(new_multiplier: int)
+# **REMOVED:** multiplier_changed signal (was for time-based system)
+# **NEW:** Combo signal
+signal combo_changed(combo_count: int, multiplier: float)
 
 func _ready():
-	# Reset score on game start
 	reset_score()
 
 func _process(delta):
-	# Continuous survival bonus
+	# Time tracking only (no multiplier changes)
 	time_survived += delta
 	
-	# Increase multiplier over time
-	var new_multiplier = int(time_survived / multiplier_increase_interval) + 1
-	if new_multiplier != score_multiplier:
-		score_multiplier = new_multiplier
-		multiplier_changed.emit(score_multiplier)
+	# **NEW:** Combo decay system
+	if combo_count > 0:
+		combo_timer += delta
+		if combo_timer >= combo_timeout:
+			reset_combo()
 
-# Called when player destroys a block
-func add_block_destroy_score():
-	var points = block_destroy_points * score_multiplier
-	current_score += points
+# **NEW:** Combo-aware scoring (REPLACES add_block_destroy_score)
+func add_combo_score(base_points: int):
+	combo_count += 1
+	combo_timer = 0.0
+	
+	# Calculate combo multiplier
+	combo_multiplier = min(1.0 + (combo_count * 0.2), max_combo_multiplier)
+	
+	# Calculate final points (no time multiplier)
+	var final_points = base_points * combo_multiplier
+	
+	current_score += int(final_points)
 	blocks_destroyed += 1
 	
-	# Emit signal for UI animation
-	score_changed.emit(current_score, points)
-	print("Score: ", current_score, " (+", points, " points)")
+	# Emit signals
+	score_changed.emit(current_score, int(final_points))
+	combo_changed.emit(combo_count, combo_multiplier)
+	
+	print("COMBO x", combo_count, "! Multiplier: x", combo_multiplier, " Points: +", int(final_points))
 
-# Called periodically for survival bonus
+# **LEGACY:** Keep for backward compatibility
+func add_block_destroy_score():
+	add_combo_score(block_destroy_points)
+
+# **NEW:** Reset combo system
+func reset_combo():
+	if combo_count > 0:
+		print("Combo ended! Final count: x", combo_count)
+	combo_count = 0
+	combo_multiplier = 1.0
+	combo_timer = 0.0
+	combo_changed.emit(combo_count, combo_multiplier)
+
+# **UNCHANGED:** Survival bonus (no multiplier)
 func add_survival_bonus():
-	var points = survival_bonus_per_second * score_multiplier
+	var points = survival_bonus_per_second
 	current_score += points
 	score_changed.emit(current_score, points)
 
-# Get formatted score string
 func get_score_text() -> String:
-	return str(current_score).pad_zeros(6)  # 6-digit padded score
+	return str(current_score). pad_zeros(6)
 
-# Get time survived as formatted string
 func get_time_text() -> String:
 	var minutes = int(time_survived) / 60
 	var seconds = int(time_survived) % 60
 	return "%02d:%02d" % [minutes, seconds]
 
-# Reset for new game
 func reset_score():
 	current_score = 0
 	blocks_destroyed = 0
 	time_survived = 0.0
-	score_multiplier = 1
+	# **REMOVED:** score_multiplier reset
+	# **NEW:** Reset combo system
+	combo_count = 0
+	combo_multiplier = 1.0
+	combo_timer = 0.0
 
-# Set UI reference for direct communication
 func set_ui_controller(ui_ref):
 	ui_controller = ui_ref
-	
-
-# Custom score addition for different block types
-func add_custom_score(points: int):
-	var final_points = points * score_multiplier
-	current_score += final_points
-	
-	# Emit signal for UI animation
-	score_changed.emit(current_score, final_points)
-	print("Score: ", current_score, " (+", final_points, " points)")
-
-# Get current difficulty level for UI display
-func get_difficulty_level() -> int:
-	var difficulty_thresholds = [0, 1000, 3000, 6000, 10000, 15000, 25000, 40000]
-	
-	for i in range(difficulty_thresholds.size() - 1, -1, -1):
-		if current_score >= difficulty_thresholds[i]:
-			return i + 1
-	
-	return 1
