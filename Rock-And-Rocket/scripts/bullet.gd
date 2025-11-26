@@ -31,7 +31,9 @@ func _process(delta):
 		queue_free()
 
 func _on_area_2d_area_entered(area):
-	if area.get_parent().has_method("setup_block_type"):
+	if area.get_parent(). has_method("setup_block_type"):
+		var block = area.get_parent()
+		
 		# Create explosion at impact point
 		create_explosion()
 		
@@ -43,10 +45,14 @@ func _on_area_2d_area_entered(area):
 		# Play explosion sound
 		AudioManager.play_explosion()
 		
-		# **NEW:** Add score for destroying block
-		ScoreManager.add_block_destroy_score()
+		# **CHANGED:** Call take_damage instead of immediate destruction
+		if block.has_method("take_damage"):
+			block.take_damage()  # **HIGHLIGHTED: USE HEALTH SYSTEM**
+		else:
+			# **FALLBACK:** Old blocks without health system
+			ScoreManager.add_block_destroy_score()
+			block.queue_free()
 		
-		area.get_parent().queue_free()
 		queue_free()
 
 func create_explosion():
