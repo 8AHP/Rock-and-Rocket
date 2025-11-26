@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://cpay0hjsvjj8l"]
+[gd_scene load_steps=3 format=3 uid="uid://cpay0hjsvjj8l"]
 
 [ext_resource type="Script" uid="uid://coaspaemrt1jl" path="res://scripts/block.gd" id="1_cgrg5"]
+[ext_resource type="Texture2D" uid="uid://cxpge1dw8f1ar" path="res://assests/block4.png" id="2_cgrg5"]
 
 [node name="Block" type="Node2D"]
 script = ExtResource("1_cgrg5")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_cgrg5")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4
@@ -16,5 +18,11 @@ polygon = PackedVector2Array(15, -26.7, 15, -24.5, 2.2000008, -20.9, -2.4000015,
 
 [node name="CollisionType2" type="CollisionPolygon2D" parent="Area2D"]
 polygon = PackedVector2Array(-1, -19.5, -1, -17.5, -2.2999992, -17, -7, -17, -18, -3, -20, -3, -20, 8.299999, -9, 13.200001, -9, 15, 17.199997, 15, 19, 11.5, 19, -1.5999985, 11, -13.599998, 11, -16.5)
+
+[node name="CollisionType3" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(2, -21, 2, -19.4, 1.5999985, -19, 0.40000153, -19, -4, -11.299999, -4, -9.599998, -7, -7.5, -7, -6.799999, -14.200001, -5, -15.700001, -5, -18, 1.7999992, -18, 3.5, -24.5, 11, -26, 11, -26, 16.300003, -24, 19.300003, -24, 20.800003, -13, 23.800003, -13, 25, -5.700001, 25, 4, 18.5, 4, 17.800003, 9, 16.800003, 9, 16.199997, 18, 17.800003, 18, 19.400002, 22, 18, 23.599998, 18, 27, 11.200001, 27, 8.799999, 20, -5.200001, 20, -8.5, 7, -19.5, 7, -21)
+
+[node name="CollisionType4" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(-26, -24, -26, -22.4, -28, -20.4, -28, -9.799999, -19, 8.200001, -19, 17, 3.7000008, 17, 9, 20.5, 9, 21.800003, 16, 23.800003, 16, 25.099998, 32.1, 23, 35, 23, 35, 13.599998, 33.4, 12, 31.400002, 12, 24.400002, 5, 22.5, 5, 19, -0.29999924, 19, -3.7000008, 13, -5.700001, 13, -7.200001, 6.799999, -6, 4.0999985, -6, -3.7999992, -9, -6.5999985, -9, -14, -16.400002, -14, -18, -16.599998, -18, -18, -19.4, -18, -20.6, -22, -22.6, -22, -24)
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

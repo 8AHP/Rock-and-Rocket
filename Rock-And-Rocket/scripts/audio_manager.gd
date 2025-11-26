@@ -2,7 +2,10 @@ extends Node
 
 var shoot_sound: AudioStreamPlayer
 var explosion_sound: AudioStreamPlayer
-var background_music: AudioStreamPlayer  # **NEW:** Background music player
+var background_music: AudioStreamPlayer
+var hit_sound: AudioStreamPlayer
+var diffup_sound : AudioStreamPlayer
+
 
 # **NEW:** Volume control variables
 var master_volume: float = 0.7  # 70% default volume
@@ -14,14 +17,20 @@ func _ready():
 	shoot_sound = AudioStreamPlayer.new()
 	explosion_sound = AudioStreamPlayer.new()
 	background_music = AudioStreamPlayer.new() 
+	hit_sound = AudioStreamPlayer.new()
+	diffup_sound = AudioStreamPlayer.new()
 	
 	add_child(shoot_sound)
 	add_child(explosion_sound)
-	add_child(background_music) 
+	add_child(background_music)
+	add_child(hit_sound)
+	add_child(diffup_sound)
 	
 	# Load sound files
 	shoot_sound.stream = load("res://assests/audio/shot.mp3")  # YOUR FILENAME
-	explosion_sound.stream = load("res://assests/audio/explosion.mp3")  # YOUR FILENAME
+	explosion_sound.stream = load("res://assests/audio/explosion.mp3") 
+	hit_sound.stream = load("res://assests/audio/hit.mp3")
+	diffup_sound.stream = load("res://assests/audio/DiffUp.mp3")
 	background_music.stream = load("res://assests/audio/background.mp3")  # YOUR MUSIC FILE
 	
 	# **NEW:** Configure background music
@@ -40,6 +49,8 @@ func _ready():
 # **NEW:** Volume update system
 func update_volumes():
 	shoot_sound.volume_db = linear_to_db(master_volume * sfx_volume * 0.6)  # **CHANGED:** 60% of SFX volume
+	diffup_sound.volume_db = linear_to_db(master_volume * sfx_volume * 1)
+	hit_sound.volume_db = linear_to_db(master_volume * sfx_volume * 0.8)
 	explosion_sound.volume_db = linear_to_db(master_volume * sfx_volume * 0.8)  # **CHANGED:** 80% of SFX volume
 	background_music.volume_db = linear_to_db(master_volume * music_volume)  # **NEW:** Music volume
 
@@ -51,6 +62,14 @@ func play_shoot():
 func play_explosion():
 	if explosion_sound.stream:
 		explosion_sound.play()
+
+func play_hit_sound():
+	if hit_sound.stream:
+		hit_sound.play()
+
+func play_level_up_sound():
+	if diffup_sound:
+		diffup_sound.play()
 
 # **NEW:** Volume control functions
 func set_master_volume(volume: float):
